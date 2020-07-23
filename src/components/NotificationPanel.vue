@@ -30,6 +30,7 @@ export default {
 <style lang="scss" scoped>
 @import '../styles/theme.scss';
 .notif-wrapper{
+  background: #fff;
   overflow: hidden;
   display: flex;
   justify-content: center;
