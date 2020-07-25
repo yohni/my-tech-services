@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-on:scroll="handleScroll">
     <NotificationPanel />
     <header class="header">
       <div class="header-wrapper">
@@ -19,29 +19,97 @@
       <h1 class="hl-title">How Can I Help You?</h1>
       <div class="hl-sub">
         <p>Our work then targeted, best practices outcomes social innovation synergy.</p>
-        <p>Venture philanthropy, revolutionary inclusive policymaker relief. User-centered
-program areas scale.</p>
+        <p>Venture philanthropy, revolutionary inclusive policymaker relief. User-centered program areas scale.</p>
       </div>
       <div class="hl-wrapper">
-        <div class="hl-item">
-          <div class="hl-item-header">
-            <div class="hl-item-title">
-              
-            </div>
-          </div>
-        </div>
+        <HighlightCard 
+          v-for="item in highlights" 
+          :key="item.name"
+          :name="item.name"
+          :content="item.content"
+          :icon="item.icon"/>
       </div>
     </div>
+    <footer class="footer">
+      &copy; 2020 Yohni. All rights reserved.​
+    </footer>
+    <NewLetter 
+      @close-click="closeNL"
+      class="nl"
+      :class='NLshow=="two" ? "nl-show" : ""'/>
   </div>
 </template>
 
 <script>
 import NotificationPanel from '../components/NotificationPanel';
+import HighlightCard from '../components/HighlightCard';
+import NewLetter from '../components/NewsLetter';
 
 export default {
   name: 'home',
   components: {
     NotificationPanel,
+    HighlightCard,
+    NewLetter,
+  },
+  data() {
+    return {
+      scroolH: 0,
+      NLshow: 'one',
+      highlights: [
+        {
+          name: 'Consult',
+          content: 'Co-create, design thinking; strengthen infrastructure resist granular. Revolution circular, movements or framework social impact low-hanging fruit. Save the world compelling revolutionary progress.',
+          icon: 'ic_chat',
+        },
+        {
+          name: 'Design',
+          content: 'Policymaker collaborates collective impact humanitarian shared value vocabulary inspire issue outcomes agile. Overcome injustice deep dive agile issue outcomes vibrant boots on the ground sustainable.',
+          icon: 'ic_brush',
+        },
+        {
+          name: 'Develop',
+          content: 'Revolutionary circular, movements a or impact framework social impact low-hanging. Save the compelling revolutionary inspire progress. Collective impacts and challenges for opportunities of thought provoking.',
+          icon: 'ic_development',
+        },
+        {
+          name: 'Marketing',
+          content: 'Peaceful; vibrant paradigm, collaborative cities. Shared vocabulary agile, replicable, effective altruism youth. Mobilize commitment to overcome injustice resilient, uplift social transparent effective.',
+          icon: 'ic_speaker',
+        },
+        {
+          name: 'Manage',
+          content: 'Change-makers innovation or shared unit of analysis. Overcome injustice outcomes strategize vibrant boots on the ground sustainable. Optimism, effective altruism invest optimism corporate social.',
+          icon: 'ic_partner',
+        },
+        {
+          name: 'Evolve',
+          content: 'Activate catalyze and impact contextualize humanitarian. Unit of analysis overcome injustice storytelling altruism. Thought leadership mass incarceration. Outcomes big data, fairness, social game-changer.',
+          icon: 'ic_increase',
+        },
+      ],
+    };
+  },
+  created() {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.handleScroll);
+  },
+  methods: {
+    handleScroll() {
+      if (window.scrollY > 0.3 * window.innerHeight) {
+        this.scroolH += 1;
+      }
+
+      if (this.scroolH >= 1 && this.NLshow === 'one') {
+        this.NLshow = 'two';
+      }
+    },
+    closeNL() {
+      this.NLshow = 'three';
+      console.log(this.NLshow);
+    },
   },
 };
 
@@ -107,7 +175,7 @@ button {
   cursor: pointer;
 }
 
-@import '../styles/theme';
+@import '../styles/theme.scss';
 
 .header{
   background: url('../assets/header_bg.jpg');
@@ -115,7 +183,7 @@ button {
   position: relative;
 
   .header-wrapper{
-    background: rgba($color: #004a75, $alpha: 0.5);
+    background: rgba($color: $MyDarkBlue, $alpha: 0.5);
     min-height: 568px;
     display: flex;
     align-items: center;
@@ -174,6 +242,7 @@ button {
 
 .hl{
   padding: 24px;
+  margin-bottom: 48px;
 
   .hl-title{
     text-align: center;
@@ -197,6 +266,33 @@ button {
       }  
     }
   }
+
+  .hl-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
 }
+
+.footer{
+  padding: 48px 12px;
+  background-color: $MyDarkBlue;
+  color: #f1f1f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nl{
+  transform: translateY(400px);
+  transition: all 0.5s ease-in;
+
+
+}
+
+.nl-show{
+  transform: translateY(0);
+}
+
 
 </style>
