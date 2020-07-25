@@ -12,7 +12,6 @@ understand our <a href="#">Policy</a>, <a href="#">Privacy Policy</a>, and our <
 
 <script>
 export default {
-  name: 'Notification Panel',
   data() {
     return {
       openNotif: true,
